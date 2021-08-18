@@ -10,10 +10,14 @@ inputs:
     description: "Name of the openapi-diff image"
     required: false
     default: "docker://openapitools/openapi-diff"
-  input_file:
+  input_file_old:
     description: "path to the input file"
     required: false
-    default: "oas/openapi-bundled.yml"
+    default: "oas/openapi-old.yml"
+  input_file_new:
+    description: "path to the input file"
+    required: false
+    default: "oas/openapi-new.yml"
 
 runs:
   using: "composite"
@@ -26,12 +30,12 @@ runs:
       shell: bash
       run: |
         set +e
-        docker run --rm -t -v$(pwd):/data ${{ inputs.image }}:latest ${{ inputs.old_file }} ${{ inputs.new_file }}
+        docker run --rm -t -v$(pwd):/data ${{ inputs.image }}:latest ${{ inputs.input_file_old }} ${{ inputs.input_file_new }} --fail-on-incompatible
         exit_code=$?
         set -e
-        if [[ $exit_code == 1 ]]; then
-          echo "::warning::TODO: update result analysis"
-        elif [[ $exit_code == 2 ]]; then
-          echo "::error::TODO - update result analysis"
+        if [[ $exit_code == 0 ]]; then
+          echo "::info:: success"
+        elif [[ $exit_code == 1 ]]; then
+          echo "::error:: failed"
           exit 1
         fi
