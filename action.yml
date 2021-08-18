@@ -9,7 +9,7 @@ inputs:
   image:
     description: "name of the openapi-diff image"
     required: false
-    default: "docker:openapitools/openapi-diff"
+    default: "docker://openapitools/openapi-diff"
   input_file:
     description: "path to the input file"
     required: false
