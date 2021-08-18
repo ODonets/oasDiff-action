@@ -1,0 +1,37 @@
+name: "Compare two openapi specifications"
+description: "Compare two openapi specifications using the custom linter wrapper around spectral"
+author: "API-Team"
+inputs:
+  registry_url:
+    description: "URL of the docker registry, no trailing slashes. "
+    default: ""
+    required: false
+  image:
+    description: "name of the openapi-diff image"
+    required: false
+    default: "docker:openapitools/openapi-diff"
+  input_file:
+    description: "path to the input file"
+    required: false
+    default: "oas/openapi-bundled.yml"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Pull openapi-diff image
+      shell: bash
+      run: docker pull --quiet ${{ inputs.image }}
+
+    - name: Run openapi-diff 
+      shell: bash
+      run: |
+        set +e
+        docker run --rm -t -v$(pwd):/data ${{ inputs.image }}:latest ${{ inputs.old_file }} ${{ inputs.new_file }}
+        exit_code=$?
+        set -e
+        if [[ $exit_code == 1 ]]; then
+          echo "::warning::TODO: update result analysis"
+        elif [[ $exit_code == 2 ]]; then
+          echo "::error::TODO - update result analysis"
+          exit 1
+        fi
