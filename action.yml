@@ -10,14 +10,14 @@ inputs:
     description: "Name of the openapi-diff image"
     required: false
     default: "docker://openapitools/openapi-diff"
-  input_file_old:
-    description: "path to the input file"
-    required: false
-    default: "oas/openapi-old.yml"
-  input_file_new:
-    description: "path to the input file"
-    required: false
-    default: "oas/openapi-new.yml"
+  # input_file_old:
+  #   description: "path to the input file"
+  #   required: false
+  #   default: "oas/openapi-old.yml"
+  # input_file_new:
+  #   description: "path to the input file"
+  #   required: false
+  #   default: "oas/openapi-new.yml"
 
 runs:
   using: "composite"
