@@ -24,18 +24,18 @@ runs:
   steps:
     - name: Pull openapi-diff image
       shell: bash
-      run: docker pull --quiet ${{ inputs.image }}
+        run: docker pull --quiet ${{ inputs.image }}
 
-    - name: Run openapi-diff 
-      shell: bash
-      run: |
-        set +e
-        docker run --rm -t -v$(pwd):/data ${{ inputs.image }}:latest ${{ inputs.input_file_old }} ${{ inputs.input_file_new }} --fail-on-incompatible
-        exit_code=$?
-        set -e
-        if [[ $exit_code == 0 ]]; then
-          echo "::info:: success"
-        elif [[ $exit_code == 1 ]]; then
-          echo "::error:: failed"
-          exit 1
-        fi
+    # - name: Run openapi-diff 
+    #   shell: bash
+    #   run: |
+    #     set +e
+    #     docker run --rm -t -v$(pwd):/data ${{ inputs.image }}:latest ${{ inputs.input_file_old }} ${{ inputs.input_file_new }} --fail-on-incompatible
+    #     exit_code=$?
+    #     set -e
+    #     if [[ $exit_code == 0 ]]; then
+    #       echo "::info:: success"
+    #     elif [[ $exit_code == 1 ]]; then
+    #       echo "::error:: failed"
+    #       exit 1
+    #     fi
