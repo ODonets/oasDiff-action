@@ -26,15 +26,6 @@ runs:
       shell: bash
       run: docker pull --quiet ${{ inputs.image }}
 
-    - name: where am I
-      shell: bash
-      run: |
-        echo "::info:: test info"
-        echo $(pwd)
-        echo 'after pwd'
-        echo $(ls)
-        echo 'after ls'
-
     - name: Run openapi-diff to compare two files
       shell: bash
       run: |
