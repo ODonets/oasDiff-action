@@ -13,11 +13,11 @@ inputs:
   input_file_old:
     description: "path to the input file"
     required: false
-    default: "oas/openapi-old.yml"
+    default: "openapi-old.yml"
   input_file_new:
     description: "path to the input file"
     required: false
-    default: "oas/openapi-new.yml"
+    default: "openapi-new.yml"
 
 runs:
   using: "composite"
@@ -35,16 +35,16 @@ runs:
         echo $(ls)
         echo 'after ls'
 
-    # - name: Run openapi-diff to compare two files
-    #   shell: bash
-    #   run: |
-    #     set +e
-    #     docker run --rm -t -v $(pwd):/data ${{ inputs.image }}:latest /data/${{ inputs.input_file_old }} /data/${{ inputs.input_file_new }} --fail-on-incompatible
-    #     exit_code=$?
-    #     set -e
-    #     if [[ $exit_code == 0 ]]; then
-    #       echo "::info:: success"
-    #     elif [[ $exit_code == 1 ]]; then
-    #       echo "::error:: failed"
-    #       exit 1
-    #     fi
+    - name: Run openapi-diff to compare two files
+      shell: bash
+      run: |
+        set +e
+        docker run --rm -t -v $(pwd)/oas:/data ${{ inputs.image }}:latest /data/${{ inputs.input_file_old }} /data/${{ inputs.input_file_new }} --fail-on-incompatible
+        exit_code=$?
+        set -e
+        if [[ $exit_code == 0 ]]; then
+          echo "::info:: success"
+        elif [[ $exit_code == 1 ]]; then
+          echo "::error:: failed"
+          exit 1
+        fi
