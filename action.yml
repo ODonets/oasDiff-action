@@ -23,6 +23,7 @@ runs:
   using: "composite"
   steps:
     - name: Pull openapi-diff image
+      shell: bash
       run: docker pull --quiet ${{ inputs.image }}
 
     # - name: Run openapi-diff 
