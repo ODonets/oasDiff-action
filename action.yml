@@ -26,11 +26,20 @@ runs:
       shell: bash
       run: docker pull --quiet ${{ inputs.image }}
 
-    # - name: Run openapi-diff 
+    - name: where am I
+      shell: bash
+      run: |
+        echo "::info:: test info"
+        echo $(pwd)
+        echo 'after pwd'
+        echo $(ls)
+        echo 'after ls'
+
+    # - name: Run openapi-diff to compare two files
     #   shell: bash
     #   run: |
     #     set +e
-    #     docker run --rm -t -v$(pwd):/data ${{ inputs.image }}:latest ${{ inputs.input_file_old }} ${{ inputs.input_file_new }} --fail-on-incompatible
+    #     docker run --rm -t -v $(pwd):/data ${{ inputs.image }}:latest /data/${{ inputs.input_file_old }} /data/${{ inputs.input_file_new }} --fail-on-incompatible
     #     exit_code=$?
     #     set -e
     #     if [[ $exit_code == 0 ]]; then
