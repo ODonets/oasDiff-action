@@ -6,10 +6,6 @@ inputs:
     description: "URL of the docker registry, no trailing slashes. "
     default: ""
     required: false
-  image:
-    description: "Name of the openapi-diff image"
-    required: false
-    default: "openapitools/openapi-diff"
   input_file_old:
     description: "path to the input file"
     required: false
@@ -28,4 +24,4 @@ runs:
 
     - name: Run openapi-diff to compare two files
       shell: bash
-      run: ${{ github.action_path}}/compareOAS.sh ${{ inputs.image }} ${{ inputs.input_file_old }} ${{ inputs.input_file_new }}
+      run: ${{ github.action_path }}/compareOASs.sh ${{ inputs.input_file_old }} ${{ inputs.input_file_new }}
