@@ -13,11 +13,11 @@ inputs:
   input_file_old:
     description: "path to the input file"
     required: false
-    default: "openapi-old1.yml"
+    default: "openapi-old.yml"
   input_file_new:
     description: "path to the input file"
     required: false
-    default: "openapi-new1.yml"
+    default: "openapi-new.yml"
 
 runs:
   using: "composite"
