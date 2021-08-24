@@ -1,5 +1,5 @@
 
-#assign descriptiv variables to the values 
+#assign descriptiv variables to the values of arguments
 INPUT_FILE_OLD=$1
 INPUT_FILE_NEW=$2
 

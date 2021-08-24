@@ -24,4 +24,4 @@ runs:
 
     - name: Run openapi-diff to compare two files
       shell: bash
-      run: ${{ github.action_path }}/compareOASs.sh ${{ inputs.input_file_old }} ${{ inputs.input_file_new }}
+      run: ${{ github.action_path }}/compareOASs.sh ${{ inputs.input_file_old }} ${{ inputs.input_file_old }}
