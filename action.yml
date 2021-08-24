@@ -20,7 +20,7 @@ runs:
   steps:
     - name: Pull openapi-diff image
       shell: bash
-      run: docker pull --quiet ${{ inputs.image }}
+      run: docker pull --quiet openapitools/openapi-diff
 
     - name: Run openapi-diff to compare two files
       shell: bash
