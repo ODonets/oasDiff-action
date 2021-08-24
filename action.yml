@@ -13,11 +13,11 @@ inputs:
   input_file_old:
     description: "path to the input file"
     required: false
-    default: "openapi-old.yml"
+    default: "openapi-old1.yml"
   input_file_new:
     description: "path to the input file"
     required: false
-    default: "openapi-new.yml"
+    default: "openapi-new1.yml"
 
 runs:
   using: "composite"
@@ -34,8 +34,11 @@ runs:
         exit_code=$?
         set -e
         if [[ $exit_code == 0 ]]; then
-          echo "::info:: success"
+          echo "success"
         elif [[ $exit_code == 1 ]]; then
-          echo "::error:: failed"
+          echo "::warning:: not compatible"
+          exit 1
+        else
+          echo "::error:: execution failed"
           exit 1
         fi
