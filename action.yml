@@ -39,6 +39,6 @@ runs:
           echo "::warning:: not compatible"
           exit 1
         else
-          echo "::error:: execution failed"
+          echo "::error:: execution failed, exit_code=$exit_code"
           exit 1
         fi
