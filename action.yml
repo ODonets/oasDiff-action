@@ -2,18 +2,22 @@ name: "Compare two openapi specifications"
 description: "Compare two openapi specifications using the custom linter wrapper around spectral"
 author: "API-Team"
 inputs:
-  registry_url:
-    description: "URL of the docker registry, no trailing slashes. "
-    default: ""
+  path:
+    description: "path to the folder with the OAS files and output change log"
     required: false
-  input_file_old:
-    description: "path to the input file"
+    default: "oas"
+  input_oas_old:
+    description: "path to the input file with old oas"
     required: false
     default: "openapi-old.yml"
-  input_file_new:
-    description: "path to the input file"
+  input_oas_new:
+    description: "path to the input file with new oas"
     required: false
     default: "openapi-new.yml"
+  output_file:
+    description: "path to the output file with change log"
+    required: false
+    default: "change-log.md"
 
 runs:
   using: "composite"
@@ -24,4 +28,4 @@ runs:
 
     - name: Run openapi-diff to compare two files
       shell: bash
-      run: ${{ github.action_path }}/compareOASs.sh ${{ inputs.input_file_old }} ${{ inputs.input_file_old }}
+      run: ${{ github.action_path }}/compareOASs.sh ${{ inputs.path }} ${{ inputs.input_oas_old }} ${{ inputs.input_oas_new }} ${{ inputs.output_file }}
