@@ -10,7 +10,7 @@ set +e
 echo "OAS_FILE_OLD = $OAS_FILE_OLD"
 echo "OAS_FILE_NEW = $OAS_FILE_NEW"
 echo "CHANGE_LOG_FILE = $CHANGE_LOG_FILE"
-docker run --rm -t -v $(pwd)/oas:/data openapitools/openapi-diff:latest /data/$OAS_FILE_OLD /data/$OAS_FILE_NEW --fail-on-incompatible > $CHANGE_LOG_FILE
+docker run --rm -t -v $(pwd)/oas:/data openapitools/openapi-diff:latest /data/$OAS_FILE_OLD /data/$OAS_FILE_NEW --fail-on-incompatible
 exit_code=$?
 set -e
 if [[ $exit_code == 0 ]]; then
