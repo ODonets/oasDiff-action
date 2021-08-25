@@ -2,7 +2,6 @@
 PATH=$1
 OAS_FILE_OLD=$2
 OAS_FILE_NEW=$3
-CHANGE_LOG_FILE=${PATH}/$4
 
 # compare two files (old and new) and catch the output and write the result into the file 
 set +e
