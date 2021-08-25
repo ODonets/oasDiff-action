@@ -6,6 +6,7 @@ CHANGE_LOG_FILE=${WORKING_DIR}/$4
 
 # compare two files (old and new) and catch the output and write the result into the file 
 set +e
+echo "CHANGE_LOG_FILE = $CHANGE_LOG_FILE"
 output=$(docker run --rm -t -v $(pwd)/oas:/data openapitools/openapi-diff:latest /data/$OAS_FILE_OLD /data/$OAS_FILE_NEW --fail-on-incompatible)
 exit_code=$?
 set -e
