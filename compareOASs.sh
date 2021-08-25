@@ -12,11 +12,11 @@ exit_code=$?
 set -e
 if [[ $exit_code == 0 ]]; then
   echo "success"
-  echo $output > $CHANGE_LOG_FILE 2>$1
+  echo "$output" > "$CHANGE_LOG_FILE"
   exit 0
 elif [[ $exit_code == 1 ]]; then
   echo "::warning::not compatible"
-  echo $output > $CHANGE_LOG_FILE 2>$1
+  echo "$output" > "$CHANGE_LOG_FILE"
   exit 0
 else
   echo "::error::execution failed, exit_code=$exit_code"
