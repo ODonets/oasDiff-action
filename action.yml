@@ -13,7 +13,7 @@ inputs:
   input_oas_new:
     description: "path to the input file with new oas"
     required: false
-    default: "openapi-new.yml"
+    default: "openapi-old.yml"
   output_file:
     description: "path to the output file with change log"
     required: false
