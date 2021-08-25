@@ -11,8 +11,10 @@ exit_code=$?
 set -e
 if [[ $exit_code == 0 ]]; then
   echo "success"
+  echo "$output"
 elif [[ $exit_code == 1 ]]; then
   echo "::warning::not compatible"
+  echo "$output"
   exit 1
 else
   echo "::error::execution failed, exit_code=$exit_code"
