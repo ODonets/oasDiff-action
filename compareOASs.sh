@@ -17,7 +17,7 @@ if [[ $exit_code == 0 ]]; then
   exit $?
 elif [[ $exit_code == 1 ]]; then
   echo "::warning:: The new OAS version is not compatible with the previous one."
-  echo "$output"
+  echo "$output" > "$CHANGE_LOG_DIR"
   echo "Exit code of the file writing command is  $?"
   exit 1
 else
