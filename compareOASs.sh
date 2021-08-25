@@ -11,13 +11,15 @@ output=$(docker run --rm -t -v $(pwd)/oas:/data openapitools/openapi-diff:latest
 exit_code=$?
 set -e
 if [[ $exit_code == 0 ]]; then
-  echo "success"
+  echo "Comparison of two OASs files was successfull"
   echo "$output" > "$CHANGE_LOG_FILE"
-  exit 0
+  echo "exit code of the writing into file is $?"
+  exit $?
 elif [[ $exit_code == 1 ]]; then
-  echo "::warning::not compatible"
+  echo "::warning:: The new OAS version is not compatible with the previous one."
   echo "$output" > "$CHANGE_LOG_FILE"
-  exit 0
+  echo "exit code of the writing into file is $?"
+  exit $?
 else
   echo "::error::execution failed, exit_code=$exit_code"
   exit 2
