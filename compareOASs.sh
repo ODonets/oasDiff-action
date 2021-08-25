@@ -1,5 +1,5 @@
 #assign descriptiv variables to the values of arguments
-PATH=$1
+PATH_ARG=$1
 OAS_FILE_OLD=$2
 OAS_FILE_NEW=$3
 
