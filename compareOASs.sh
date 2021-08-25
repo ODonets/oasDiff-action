@@ -2,7 +2,7 @@
 WORKING_DIR=$1
 OAS_FILE_OLD=$2
 OAS_FILE_NEW=$3
-CHANGE_LOG_FILE=${WORKING_DIR}
+CHANGE_LOG_FILE=${WORKING_DIR}/$4
 
 # compare two files (old and new) and catch the output and write the result into the file 
 set +e
@@ -13,14 +13,14 @@ set -e
 if [[ $exit_code == 0 ]]; then
   echo "Comparison of two OASs files was successfull"
   echo "$output" > "$CHANGE_LOG_FILE"
-  echo "exit code of the writing into file is $?"
+  echo "Exit code of the file writing command is $?"
   exit $?
 elif [[ $exit_code == 1 ]]; then
   echo "::warning:: The new OAS version is not compatible with the previous one."
   echo "$output" > "$CHANGE_LOG_FILE"
-  echo "exit code of the writing into file is $?"
-  exit $?
+  echo "Exit code of the file writing command is  $?"
+  exit 1
 else
   echo "::error::execution failed, exit_code=$exit_code"
-  exit 2
+  exit $exit_code
 fi
