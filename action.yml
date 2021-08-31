@@ -3,7 +3,7 @@ description: "Compare two openapi specifications using the openapi-diff tool"
 author: "API-Team"
 inputs:
   path:
-    description: "Path to the folder with the OAS files and output change log"
+    description: "Path to the folder with the OAS files and output change log. The oas directory is mounted into the /data in the Docker container"
     required: false
     default: "oas"
   input_oas_old:
@@ -15,7 +15,7 @@ inputs:
     required: false
     default: "openapi-new.yml"
   output_file:
-    description: "Change log file name. "
+    description: "Change log file name. This will be used as the filename for the Markdown output. The Markdown file results in the desired oas directory (oas/change-log.md), since this directory is mounted in the Docker container in /data."
     required: false
     default: "change-log.md"
 
