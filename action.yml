@@ -30,7 +30,7 @@ runs:
       shell: bash
       run: |
         set +e
-        docker run --rm -t -v $(pwd)/${{ inputs.path }}:/data openapitools/openapi-diff:latest /data/${{ inputs.input_oas_old }} /data/${{ inputs.input_oas_new }} --fail-on-incompatible --state --markdown /data/${{ inputs.output_file }}
+        docker run --rm -t -v $(pwd)/${{ inputs.path }}:/data openapitools/openapi-diff:latest /data/${{ inputs.input_oas_old }} /data/${{ inputs.input_oas_new }} --fail-on-incompatible --markdown /data/${{ inputs.output_file }}
         exit_code=$?
         set -e
         if [[ $exit_code == 0 ]]; then
