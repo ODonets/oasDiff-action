@@ -30,19 +30,14 @@ runs:
       shell: bash
       run: |
         set +e
-        echo "CHANGE_LOG_DIR = $CHANGE_LOG_DIR"
-        output=$(docker run --rm -t -v $(pwd)/${{ inputs.path }}:/data openapitools/openapi-diff:latest /data/${{ inputs.input_oas_old }} /data/${{ inputs.input_oas_new }} --fail-on-incompatible)
+        docker run --rm -t -v $(pwd)/${{ inputs.path }}:/data openapitools/openapi-diff:latest /data/${{ inputs.input_oas_old }} /data/${{ inputs.input_oas_new }} --fail-on-incompatible --state --markdown /data/${{ inputs.output_file }}
         exit_code=$?
         set -e
         if [[ $exit_code == 0 ]]; then
           echo "The comparison operation was successful. The new OAS version is compatible with the previous one."
-          echo "$output" > ${{ inputs.path }}/${{ inputs.output_file }}
-          echo "Exit code of the file writing command is $?"
           exit $?
         elif [[ $exit_code == 1 ]]; then
           echo "::warning:: The comparison operation was successful and the new OAS version is not compatible with the previous one."
-          echo "$output" > ${{ inputs.path }}/${{ inputs.output_file }}
-          echo "Exit code of the file writing command is  $?"
           exit 1
         else
           echo "::error::Comparison operation failed, exit code is $exit_code"
