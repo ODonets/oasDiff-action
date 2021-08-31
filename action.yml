@@ -15,7 +15,7 @@ inputs:
     required: false
     default: "openapi-new.yml"
   output_file:
-    description: "Change log file name"
+    description: "Change log file name. "
     required: false
     default: "change-log.md"
 
@@ -30,18 +30,15 @@ runs:
       shell: bash
       run: |
         set +e
+        #capture the output to a variable to avoid printing the long CLI output of the change log to the console. The provided parameters for less or no output (--state, --off) do not work together with --fail-on-incompatible(need for exit with 1)
         output=$(docker run --rm -t -v $(pwd)/${{ inputs.path }}:/data openapitools/openapi-diff:latest /data/${{ inputs.input_oas_old }} /data/${{ inputs.input_oas_new }} --fail-on-incompatible --markdown /data/${{ inputs.output_file }})
         exit_code=$?
         set -e
         if [[ $exit_code == 0 ]]; then
           echo "The comparison operation was successful. The new OAS version is compatible with the previous one."
-          echo $output
-          #echo $output
           exit $?
         elif [[ $exit_code == 1 ]]; then
           echo "::warning:: The comparison operation was successful and the new OAS version is not compatible with the previous one."
-          echo $output
-          #echo $output
           exit 1
         else
           echo "::error::Comparison operation failed, exit code is $exit_code"
