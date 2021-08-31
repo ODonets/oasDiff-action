@@ -1,21 +1,21 @@
-name: "Compare two openapi specifications"
-description: "Compare two openapi specifications using the custom linter wrapper around spectral"
+name: "Compare two openapi specifications for breaking changes"
+description: "Compare two openapi specifications using the openapi-diff tool"
 author: "API-Team"
 inputs:
   path:
-    description: "path to the folder with the OAS files and output change log"
+    description: "Path to the folder with the OAS files and output change log"
     required: false
     default: "oas"
   input_oas_old:
-    description: "path to the input file with old oas"
+    description: "File name of the old OAS"
     required: false
     default: "openapi-old.yml"
   input_oas_new:
-    description: "path to the input file with new oas"
+    description: "File name of the new OAS"
     required: false
     default: "openapi-new.yml"
   output_file:
-    description: "path to the output file with change log"
+    description: "Change log file name"
     required: false
     default: "change-log.md"
 
@@ -26,6 +26,26 @@ runs:
       shell: bash
       run: docker pull --quiet openapitools/openapi-diff
 
-    - name: Run openapi-diff to compare two files
+    - name: Run openapi-diff to compare two OASs
       shell: bash
-      run: ${{ github.action_path }}/compareOASs.sh ${{ inputs.path }} ${{ inputs.input_oas_old }} ${{ inputs.input_oas_new }} ${{ inputs.output_file }}
+      run: |
+        set +e
+        echo "CHANGE_LOG_DIR = $CHANGE_LOG_DIR"
+        output=$(docker run --rm -t -v $(pwd)/${{ inputs.path }}:/data openapitools/openapi-diff:latest /data/${{ inputs.input_oas_old }} /data/${{ inputs.input_oas_new }} --fail-on-incompatible)
+        exit_code=$?
+        set -e
+        if [[ $exit_code == 0 ]]; then
+          echo "The comparison operation was successful. The new OAS version is compatible with the previous one."
+          echo "$output" > ${{ inputs.path }}/${{ inputs.output_file }}
+          echo "Exit code of the file writing command is $?"
+          exit $?
+        elif [[ $exit_code == 1 ]]; then
+          echo "::warning:: The comparison operation was successful and the new OAS version is not compatible with the previous one."
+          echo "$output" > ${{ inputs.path }}/${{ inputs.output_file }}
+          echo "Exit code of the file writing command is  $?"
+          exit 1
+        else
+          echo "::error::Comparison operation failed, exit code is $exit_code"
+          exit $exit_code
+        fi
+  
