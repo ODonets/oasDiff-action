@@ -18,6 +18,10 @@ inputs:
     description: "Change log file name. This will be used as the filename for the Markdown output. The Markdown file results in the desired oas directory (oas/change-log.md), since this directory is mounted in the Docker container in /data."
     required: false
     default: "change-log.md"
+  output_base_name:
+    description: "Change log file name. This will be used as the filename for the Markdown output. The Markdown file results in the desired oas directory (oas/change-log.md), since this directory is mounted in the Docker container in /data."
+    required: false
+    default: "changelog"
 
 runs:
   using: "composite"
@@ -26,12 +30,15 @@ runs:
       shell: bash
       run: docker pull --quiet openapitools/openapi-diff
 
-    - name: Run openapi-diff to compare two OASs
+    - name: Run openapi-diff instance to compare two OASs, exit with 1 if incompatible and export the results into output_file
       shell: bash
       run: |
         set +e
-        #capture the output to a variable to avoid printing the long CLI output of the change log to the console. The provided parameters for less or no output (--state, --off) do not work together with --fail-on-incompatible(need for exit with 1)
-        output=$(docker run --rm -t -v $(pwd)/${{ inputs.path }}:/data openapitools/openapi-diff:latest /data/${{ inputs.input_oas_old }} /data/${{ inputs.input_oas_new }} --fail-on-incompatible --markdown /data/${{ inputs.output_file }})
+        #if need the if-clause can  be added to differentiate between Markdown and HTML format extention based on the additional input variable
+        output_file_name=${{ inputs.output_base_name }}.md
+        echo "output_file_name is $output_file_name"
+        #capture the output to a variable to avoid printing the long CLI output of the change log to the console. The provided parameters for less or no output (--state, --off) do not work together with --fail-on-incompatible(needed for exit code with 1)
+        output=$(docker run --rm -t -v $(pwd)/${{ inputs.path }}:/data openapitools/openapi-diff:latest /data/${{ inputs.input_oas_old }} /data/${{ inputs.input_oas_new }} --fail-on-incompatible --markdown /data/$output_file_name)
         exit_code=$?
         set -e
         if [[ $exit_code == 0 ]]; then
@@ -44,4 +51,7 @@ runs:
           echo "::error::Comparison operation failed, exit code is $exit_code"
           exit $exit_code
         fi
+
+
+        
   
